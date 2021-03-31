@@ -1,0 +1,56 @@
+# REF: https://en.wikipedia.org/wiki/Knapsack_problem
+
+import csv
+import numpy as np
+
+from cso import BCSO
+
+FILEPATH = '../dataset/kp/knapsack_wiki.csv'
+
+W = 0      # pesos
+U = 0      # utilidades
+N = 0      # numero de objetos
+M = 0      # peso maximo
+
+with open(FILEPATH, 'r') as f:
+    data = np.array(list(csv.reader(f, delimiter=' ')), dtype=int)
+
+    N = data[0][0]
+    M = data[0][1]
+
+    data = data[1:]
+
+    U = data[:, 0]
+    W = data[:, 1]
+
+
+print()
+print(FILEPATH)
+print()
+print('N', N)
+print('W', W)
+print('U', U)
+print('W Max', M)
+print()
+
+def test_function(x, *args, **kwargs):
+
+    # se calcula el costo
+    c = 0
+    for i, _ in enumerate(x):
+        c = c + (x[i] * U[i])
+
+    w = 0
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # penalizo sobrepasar el peso maximo
+    return c if w <= M else 0
+
+
+o = BCSO(test_function, dimension=N, maximize=True,
+        n_cats=500, smp=20, maxiter=150, cdc=0.7, mr=0.5)
+
+best = o.run()
+
+print(best)
