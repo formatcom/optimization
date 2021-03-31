@@ -36,6 +36,10 @@ Parametros
 
 Opcionales
 ==========
+- maximize : bool
+    Por defecto es False, se utiliza para indicar si se busca max o min
+    la func_test.
+
 - n_cats : int
     Numero de gatos.
 
@@ -85,6 +89,10 @@ Parametros
 
 Opcionales
 ==========
+- maximize : bool
+    Por defecto es False, se utiliza para indicar si se busca max o min
+    la func_test.
+
 - dimension : int
     Numero de dimensiones.
 
