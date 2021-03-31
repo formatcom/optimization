@@ -153,5 +153,4 @@ $ time python test_himmelblaus.py
 - https://en.wikipedia.org/wiki/Test_functions_for_optimization
 - https://es.wikipedia.org/wiki/Problema_del_conjunto_de_cobertura
 - https://en.wikipedia.org/wiki/Set_cover_problem
-- https://es.wikipedia.org/wiki/Problema_del_conjunto_de_cobertura
 ~~~
