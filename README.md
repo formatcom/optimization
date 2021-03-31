@@ -28,7 +28,7 @@ Parametros
 - func_test : func
     La funcion a minimizar / maximizar.
 
-- lb : list
+- lb : array
     limites inferiores de las variable[s].
 
 - ub : array
