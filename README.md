@@ -162,7 +162,7 @@ GFLOPS:  86.4
 ### CSO  | test_sphere.py | dimension 3
 
 > Global minimum
-$ f(x^1, ..., X^n) = f(0,...,0) = 0 $
+$ f(x~1, ..., X~n) = f(0,...,0) = 0 $
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|
