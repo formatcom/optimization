@@ -7,7 +7,12 @@
 # REF: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6393876/
 # REF: http://opac.pucv.cl/pucv_txt/txt-6500/UCD6603_01.pdf
 
+from multiprocessing import Process, Queue
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
+
 import numpy as np
+from numpy.random import default_rng, SeedSequence
 
 class _CSO:
 
@@ -18,9 +23,10 @@ class _CSO:
     CAT_VELOCITY = 1
     CAT_FLAG = 2
 
-    BEST_CAT_INDEX = 0
-    BEST_CAT_POSITION = 1
-    BEST_FUNC_TEST_VALUE = 2
+    BEST_PROCESS_ID = 0
+    BEST_CAT_INDEX = 1
+    BEST_CAT_POSITION = 2
+    BEST_FUNC_TEST_VALUE = 3
 
     def valid_args_limit(self):
         pass
@@ -53,8 +59,10 @@ class _CSO:
         ### 3.- Evaluar FS (Función fitness) para todos los candidatos
 
         # Si todos los elementos son iguales la propabilidad para todos es 1
-        fs = np.array([self.func_test(x, *self.args, **self.kwargs)
-                                                for x in copycat])
+        fs = np.array(list(self.threads.map(
+                                self.func_test,
+                                copycat, chunksize=self.chunksize)))
+
         if (fs == fs[0]).all():
             p = np.array([1] * len(copycat))
 
@@ -74,7 +82,9 @@ class _CSO:
 
         cats[self.CAT_POSITION][mask] = _cats
 
-    def run(self):
+    def __worker__(self, pid, random, maxiter, queue):
+
+        self.random = random # random con soporte a multiprocess
 
         ### 1.- Especificar limites maximos y minimos
         self.valid_args_limit()
@@ -93,17 +103,17 @@ class _CSO:
         ### 2.1.- Inicializar velocidad
         self.init_velocity(cats)
 
-
         ### 3.- Clasificar aleatoriamente a los gatos segun el mr
         cats[self.CAT_FLAG] = ( [self.MODE_TRACING] * int(self.n_cats * self.mr) ) + \
                               ( [self.MODE_SEEKING] * int(self.n_cats * (1 - self.mr)))
 
-        cats[self.CAT_FLAG] = np.random.permutation(cats[self.CAT_FLAG])
+        cats[self.CAT_FLAG] = self.random.permutation(cats[self.CAT_FLAG])
 
 
         ### 4.- Evaluar la función fitness para todos los gatos
-        best = [[]] * 3
+        best = [[]] * 4
 
+        best[self.BEST_PROCESS_ID] = pid
         best[self.BEST_CAT_INDEX] = -1
         best[self.BEST_CAT_POSITION] = list()
         best[self.BEST_FUNC_TEST_VALUE] = np.inf
@@ -115,8 +125,10 @@ class _CSO:
         it = 0
         while True:
 
-            newfs = np.array([self.func_test(x, *self.args, **self.kwargs)
-                                                    for x in cats[self.CAT_POSITION]])
+            newfs = np.array(list(self.threads.map(
+                                    self.func_test,
+                                    cats[self.CAT_POSITION],
+                                    chunksize=self.chunksize)))
 
             ### 4.1 Guardar la mejor posición en memoria
             _update = newfs < fs
@@ -130,7 +142,7 @@ class _CSO:
                 best[self.BEST_FUNC_TEST_VALUE] = fs[_index_min]
                 best[self.BEST_CAT_POSITION] = cats[self.CAT_POSITION][_index_min].copy()
 
-            if it == self.maxiter:
+            if it == maxiter:
                 break
 
             ### 5.- Aplicar comportamientos
@@ -145,27 +157,84 @@ class _CSO:
                 self.mode_seeking(mask_seeking, i, cats, best)
 
             # Clasificar aleatoriamente a los gatos segun el mr
-            cats[self.CAT_FLAG] = np.random.permutation(cats[self.CAT_FLAG])
+            cats[self.CAT_FLAG] = self.random.permutation(cats[self.CAT_FLAG])
 
             it += 1
+
+        if self.workers == 1:
+            return best
+
+        queue.put(best)
+
+    def run(self):
+
+        split = int(np.ceil(self.maxiter / self.workers))
+        seq = SeedSequence()
+        random = seq.spawn(self.workers)
+
+        if self.debug:
+            print()
+            print('maxiter {} split {} workers {} threads {} chunksize {} cats {}'.format(
+                    self.maxiter, split,
+                    self.workers, self.n_threads, self.chunksize, self.n_cats))
+
+        best = None
+
+        if self.workers == 1:
+            best = self.__worker__(0, default_rng(random[0]), self.maxiter, None)
+        else:
+
+            queue_best = Queue()
+
+            best = [[]] * 4
+            best[self.BEST_FUNC_TEST_VALUE] = np.inf
+
+            for pid in range(self.workers):
+                Process(target=self.__worker__, args=(
+                                    pid,
+                                    default_rng(random[pid]),
+                                    split,
+                                    queue_best)).start()
+
+            for _ in range(self.workers):
+                _best = queue_best.get()
+                if self.debug:
+                    print(_best)
+
+                if _best[self.BEST_FUNC_TEST_VALUE] < best[self.BEST_FUNC_TEST_VALUE]:
+                    best = _best
 
         # Se parchea la salida si se esta maximizando para optener el valor real: -f(x)
         if self.maximize:
             best[self.BEST_FUNC_TEST_VALUE] = -best[self.BEST_FUNC_TEST_VALUE]
 
+        if self.debug:
+            print()
+
         return best
 
-    def __init__(self, func_test, maximize=False, n_cats=100, maxiter=100, *args, **kwargs):
+    def __init__(self, func_test, debug=True,
+            maximize=False, n_cats=100, maxiter=100,
+            workers=1, threads=1, chunksize=1,
+            *args, **kwargs):
 
         # Validaciones iniciales
         assert hasattr(func_test, '__call__'), 'Invalid function handle'
 
-        # Para maximizar la función la invierto: -f(x)
-        self.func_test = func_test if not maximize else lambda x, *args, **kwargs: -func_test(x, *args, **kwargs)
+        _func_test = partial(func_test, *args, **kwargs)
 
+        # Para maximizar la función la invierto: -f(x)
+        self.func_test = _func_test if not maximize else lambda x: -_func_test(x)
+
+        self.debug = debug
         self.n_cats = n_cats
         self.maxiter = maxiter
         self.maximize = maximize
+        self.chunksize = chunksize
+        self.workers = workers
+        self.n_threads = threads
+
+        self.threads = ThreadPoolExecutor(max_workers=threads)
 
         self.omega = kwargs.get('omega')
         self.mr = kwargs.get('mr')
@@ -195,7 +264,7 @@ class CSO(_CSO):
 
     def init_positions(self, cats):
         # se crean los gatos con valores entre [0, 1]
-        cats[self.CAT_POSITION] = np.random.rand(self.n_cats, self.dimension)
+        cats[self.CAT_POSITION] = self.random.random((self.n_cats, self.dimension))
 
         # inicializar la posicion de los gatos respetando los limites
         cats[self.CAT_POSITION] = self.lb + ( cats[self.CAT_POSITION] * ( self.ub - self.lb ) )
@@ -205,17 +274,17 @@ class CSO(_CSO):
         velocityMax = np.abs(self.ub - self.lb)
         velocityMin = -velocityMax
 
-        cats[self.CAT_VELOCITY] = velocityMin + np.random.rand(self.n_cats, self.dimension) * \
+        cats[self.CAT_VELOCITY] = velocityMin + self.random.random((self.n_cats, self.dimension)) * \
                                 (velocityMax - velocityMin)
 
     def apply_mutation(self, cats):
         for cat in cats:
 
             # Actualizamos la mascara de mutación
-            self.maskm = np.random.permutation(self.maskm)
+            self.maskm = self.random.permutation(self.maskm)
 
             # Se elige si se suma o se resta el valor
-            operation = np.random.choice([-1, 1], self.n_mutations)
+            operation = self.random.choice([-1, 1], self.n_mutations)
 
             cat[self.maskm] = cat[self.maskm] + (operation * self.srd * cat[self.maskm])
 
@@ -239,7 +308,7 @@ class CSO(_CSO):
         n = len(cats[self.CAT_POSITION][mask])
 
         ### 1.- Actualizar Velocidad
-        r = np.random.uniform(size=(n, self.dimension))
+        r = self.random.uniform(size=(n, self.dimension))
         c = self.omega
 
         cats[self.CAT_VELOCITY][mask] = cats[self.CAT_VELOCITY][mask] + r * c * \
@@ -260,22 +329,22 @@ class CSO(_CSO):
 class BCSO(_CSO):
 
     def init_positions(self, cats):
-        cats[self.CAT_POSITION] = np.random.randint(2, size=(self.n_cats, self.dimension))
+        cats[self.CAT_POSITION] = self.random.randint(2, size=(self.n_cats, self.dimension))
 
     # se asigna una velocidad por dimension
     # la velicidad en binario se define como
     # v[k][d][0] probabilidad de que cambie a 0
     # v[k][d][1] probabilidad de que cambie a 1
     def init_velocity(self, cats):
-        cats[self.CAT_VELOCITY] = np.random.uniform(size=(self.n_cats, self.dimension, 2))
+        cats[self.CAT_VELOCITY] = self.random.uniform(size=(self.n_cats, self.dimension, 2))
 
     def apply_mutation(self, cats):
         for cat in cats:
 
             # Actualizamos la mascara de mutación
-            self.maskm = np.random.permutation(self.maskm)
+            self.maskm = self.random.permutation(self.maskm)
 
-            update = np.random.rand(self.n_mutations) < self.pmo
+            update = self.random.random(self.n_mutations) < self.pmo
 
             x = cat[self.maskm]
 
@@ -293,7 +362,7 @@ class BCSO(_CSO):
         for k, cat in enumerate(cats[self.CAT_POSITION]):
             for d, _ in enumerate(cat):
 
-                r = np.random.rand()
+                r = self.random.random()
 
                 # 1.-
                 if best[self.BEST_CAT_POSITION][d] == 1:
@@ -319,7 +388,7 @@ class BCSO(_CSO):
                 # 4.- Probabilidad de mutación
                 m = 1 / (1 + (np.e ** -cats[self.CAT_VELOCITY][k][d][1]))
 
-                if np.random.rand() > m:
+                if self.random.random() > m:
                     cat[d] = best[self.BEST_CAT_POSITION][d]
 
 
@@ -330,7 +399,6 @@ class BCSO(_CSO):
         self.dimension = dimension
         self.pmo = pmo
         self.weight = weight
-
 
         super().__init__(func_test,
                             omega=omega, mr=mr,

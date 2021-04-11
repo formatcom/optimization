@@ -150,6 +150,12 @@ $ cd cso
 $ time python test_himmelblaus.py
 ~~~
 
+### Resultados
+| class | n | problem | workers | threads | chunksize | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| CSO | 1 |sphere | 1 | 1 | 500 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 |  |  | 
+
+
 ### Referencias
 ~~~
 - https://www.researchgate.net/publication/221419703_Cat_Swarm_Optimization
