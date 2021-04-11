@@ -161,7 +161,9 @@ GFLOPS:  86.4
 
 ### CSO  | test_sphere.py | dimension 3
 
-> Global minimum  ![](https://render.githubusercontent.com/render/math?math=f(x_{1},...,x_{n}) = f(0,...,0)=0)
+> Global minimum 
+
+![](https://render.githubusercontent.com/render/math?math=f(x_{1},...,x_{n}) = f(0,...,0)=0)
 
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
