@@ -161,9 +161,8 @@ GFLOPS:  86.4
 
 ### CSO  | test_sphere.py | dimension 3
 
-> Global minimum
+> Global minimum  ![](https://render.githubusercontent.com/render/math?math=f(x_{1},...,x_{n}) = f(0,...,0)=0)
 
-$$ f(x~1, ..., X~n) = f(0,...,0) = 0 $$
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|
@@ -198,9 +197,7 @@ $$ f(x~1, ..., X~n) = f(0,...,0) = 0 $$
 
 ### CSO  | test_matyas.py | dimension 2
 
-> Global minimum
-
-$$ f(0,0) = 0 $$
+> Global minimum ![](https://render.githubusercontent.com/render/math?math=f(0,0)=0) 
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|
