@@ -7,12 +7,14 @@
 # REF: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6393876/
 # REF: http://opac.pucv.cl/pucv_txt/txt-6500/UCD6603_01.pdf
 
-from multiprocessing import Process, Queue
+import os
+from multiprocessing import Process, Queue, Array
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 
 import numpy as np
 from numpy.random import default_rng, SeedSequence
+
 
 class _CSO:
 
@@ -25,8 +27,8 @@ class _CSO:
 
     BEST_PROCESS_ID = 0
     BEST_CAT_INDEX = 1
-    BEST_CAT_POSITION = 2
-    BEST_FUNC_TEST_VALUE = 3
+    BEST_FUNC_TEST_VALUE = 2
+    BEST_CAT_POSITION = 3
 
     def valid_args_limit(self):
         pass
@@ -59,9 +61,12 @@ class _CSO:
         ### 3.- Evaluar FS (Función fitness) para todos los candidatos
 
         # Si todos los elementos son iguales la propabilidad para todos es 1
-        fs = np.array(list(self.threads.map(
-                                self.func_test,
-                                copycat, chunksize=self.chunksize)))
+        if self.n_threads > 1:
+            fs = np.array(list(self.threads.map(
+                                    self.func_test,
+                                    copycat)))
+        else:
+            fs = np.array([self.func_test(x) for x in copycat])
 
         if (fs == fs[0]).all():
             p = np.array([1] * len(copycat))
@@ -82,12 +87,12 @@ class _CSO:
 
         cats[self.CAT_POSITION][mask] = _cats
 
-    def __worker__(self, pid, random, maxiter, queue):
+    def __worker__(self, pid, random, maxiter, shared_best):
+
+        if self.n_threads > 1:
+            self.threads = ThreadPoolExecutor(max_workers=self.n_threads)
 
         self.random = random # random con soporte a multiprocess
-
-        ### 1.- Especificar limites maximos y minimos
-        self.valid_args_limit()
 
         # Mascara de mutación, utilizada en el modo seeking
         self.n_mutations = int(self.cdc * self.dimension)
@@ -125,10 +130,13 @@ class _CSO:
         it = 0
         while True:
 
-            newfs = np.array(list(self.threads.map(
-                                    self.func_test,
-                                    cats[self.CAT_POSITION],
-                                    chunksize=self.chunksize)))
+            if self.n_threads > 1:
+                newfs = np.array(list(self.threads.map(
+                                        self.func_test,
+                                        cats[self.CAT_POSITION])))
+            else:
+                newfs = np.array([self.func_test(x)
+                                        for x in cats[self.CAT_POSITION]])
 
             ### 4.1 Guardar la mejor posición en memoria
             _update = newfs < fs
@@ -143,6 +151,20 @@ class _CSO:
                 best[self.BEST_CAT_POSITION] = cats[self.CAT_POSITION][_index_min].copy()
 
             if it == maxiter:
+
+                if self.debug:
+                    print(best)
+
+                if not shared_best:
+                    break
+
+                if best[self.BEST_FUNC_TEST_VALUE] < shared_best[self.BEST_FUNC_TEST_VALUE]:
+                    shared_best[self.BEST_PROCESS_ID] = best[self.BEST_PROCESS_ID]
+                    shared_best[self.BEST_CAT_INDEX] = best[self.BEST_CAT_INDEX]
+                    shared_best[self.BEST_FUNC_TEST_VALUE] = best[self.BEST_FUNC_TEST_VALUE]
+
+                    for i, position in enumerate(best[self.BEST_CAT_POSITION]):
+                        shared_best[self.BEST_CAT_POSITION + i] = position
                 break
 
             ### 5.- Aplicar comportamientos
@@ -164,38 +186,59 @@ class _CSO:
         if self.workers == 1:
             return best
 
-        queue.put(best)
-
     def run(self):
 
-        split = int(np.ceil(self.maxiter / self.workers))
+        ### 1.- Especificar limites maximos y minimos
+        self.valid_args_limit()
+
+        chunk = int(np.ceil(self.maxiter / self.workers))
         seq = SeedSequence()
         random = seq.spawn(self.workers)
 
         if self.debug:
             print()
-            print('maxiter {} split {} workers {} threads {} chunksize {} cats {}'.format(
-                    self.maxiter, split,
-                    self.workers, self.n_threads, self.chunksize, self.n_cats))
+            print('maxiter {} chunk {} workers {} threads {} cats {}'.format(
+                    self.maxiter, chunk,
+                    self.workers, self.n_threads, self.n_cats))
+            print()
+            print('exec pstree -p', os.getpid())
 
         best = None
+
 
         if self.workers == 1:
             best = self.__worker__(0, default_rng(random[0]), self.maxiter, None)
         else:
 
-            queue_best = Queue()
-
             best = [[]] * 4
             best[self.BEST_FUNC_TEST_VALUE] = np.inf
 
+            shared_best = Array('d', [0.0] * (self.dimension + 4), lock=True)
+            shared_best[self.BEST_FUNC_TEST_VALUE] = np.Inf
+
+            jobs = []
+
             for pid in range(self.workers):
-                Process(target=self.__worker__, args=(
+                p = Process(target=self.__worker__, args=(
                                     pid,
                                     default_rng(random[pid]),
-                                    split,
-                                    queue_best)).start()
+                                    chunk,
+                                    shared_best))
+                jobs.append(p)
 
+                p.start()
+
+            for job in jobs:
+                job.join()
+
+            best[self.BEST_PROCESS_ID] = shared_best[self.BEST_PROCESS_ID]
+            best[self.BEST_CAT_INDEX] = shared_best[self.BEST_CAT_INDEX]
+            best[self.BEST_FUNC_TEST_VALUE] = shared_best[self.BEST_FUNC_TEST_VALUE]
+
+            for i in range(self.dimension):
+                best[self.BEST_CAT_POSITION].append(shared_best[self.BEST_CAT_POSITION + i])
+
+            '''
             for _ in range(self.workers):
                 _best = queue_best.get()
                 if self.debug:
@@ -203,6 +246,7 @@ class _CSO:
 
                 if _best[self.BEST_FUNC_TEST_VALUE] < best[self.BEST_FUNC_TEST_VALUE]:
                     best = _best
+            '''
 
         # Se parchea la salida si se esta maximizando para optener el valor real: -f(x)
         if self.maximize:
@@ -214,9 +258,8 @@ class _CSO:
         return best
 
     def __init__(self, func_test, debug=True,
-            maximize=False, n_cats=100, maxiter=100,
-            workers=1, threads=1, chunksize=1,
-            *args, **kwargs):
+            maximize=False, cats=100, maxiter=100,
+            workers=1, threads=1, *args, **kwargs):
 
         # Validaciones iniciales
         assert hasattr(func_test, '__call__'), 'Invalid function handle'
@@ -227,14 +270,11 @@ class _CSO:
         self.func_test = _func_test if not maximize else lambda x: -_func_test(x)
 
         self.debug = debug
-        self.n_cats = n_cats
+        self.n_cats = cats
         self.maxiter = maxiter
         self.maximize = maximize
-        self.chunksize = chunksize
         self.workers = workers
         self.n_threads = threads
-
-        self.threads = ThreadPoolExecutor(max_workers=threads)
 
         self.omega = kwargs.get('omega')
         self.mr = kwargs.get('mr')

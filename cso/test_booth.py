@@ -7,7 +7,7 @@ def booth_function(x, *args, **kwargs):
 
 o = CSO(booth_function, lb=[-10, -10], ub=[10, 10],
             workers=1, theads=2, chunksize=300,
-            n_cats=600, smp=10, maxiter=300, mr=0.5)
+            cats=600, smp=10, maxiter=300, mr=0.5)
 
 best = o.run()
 
