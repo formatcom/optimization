@@ -151,9 +151,9 @@ $ time python test_himmelblaus.py
 ~~~
 
 ### Resultados
-| class | n | problem | workers | threads | chunksize | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
-|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
-| CSO | 1 |sphere | 1 | 1 | 500 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 |  |  | 
+| class | n | problem | dimension | workers | threads | chunksize | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+| CSO | 1 |sphere | 3 | 1 | 1 | 500 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 | 33.46s | [-0.00070247,  0.00419061,  0.00931485] | 
 
 
 ### Referencias
