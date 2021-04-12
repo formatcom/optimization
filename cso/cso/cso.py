@@ -8,7 +8,7 @@
 # REF: http://opac.pucv.cl/pucv_txt/txt-6500/UCD6603_01.pdf
 
 import os
-from multiprocessing import Process, Queue, Array
+from multiprocessing import Process, Array
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 

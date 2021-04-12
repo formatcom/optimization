@@ -9,7 +9,7 @@ def matyas_function(x, *args, **kwargs):
 
 
 o = CSO(matyas_function, lb=[-10, -10], ub=[10, 10],
-            workers=1, threads=1, maxiter=200,
+            workers=2, threads=1, maxiter=200,
             cats=500, mr=0.5, smp=10, cdc=1, srd=0.1, spc=False, omega=0.5)
 
 best = o.run()

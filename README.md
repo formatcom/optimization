@@ -161,7 +161,9 @@ GFLOPS:  86.4
 
 ### CSO  | test_sphere.py | dimension 3
 
-> Global minimum ![](https://render.githubusercontent.com/render/math?math=f\(x_{1},...,x_{n}\)=f\(0,...,0\)=0)
+> Global minimum
+>
+> ![sphere](markdown/sphere.svg)
 
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
@@ -197,7 +199,9 @@ GFLOPS:  86.4
 
 ### CSO  | test_matyas.py | dimension 2
 
-> Global minimum ![](https://render.githubusercontent.com/render/math?math=f\(0,0\)=0) 
+> Global minimum
+>
+> ![matyas](markdown/matyas.svg)
 
 | n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
 |--|--|--|--|--|--|--|--|--|--|--|--|--|
@@ -211,6 +215,16 @@ GFLOPS:  86.4
 |  8  | 1 | 1 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 | 20.48s | [0.0019583 , 0.00202374]|
 |  9  | 1 | 1 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 | 21.34s | [0.00495406, 0.0041392 ]|
 |  10  | 1 | 1 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 | 21.05s | [0.00926299, 0.00963383]|
+
+### CSO  | test_beale.py | dimension 2
+
+> Global minimum
+>
+> ![beale](markdown/beale.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | srd | spc | omega | time | result |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 200 | 500 | 0.5 | 10 | 1 | 0.1 | False | 0.5 | 21.70s | [-0.00219794, -0.00220389]| 
 
 ### Referencias
 ~~~
