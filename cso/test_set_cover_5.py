@@ -1,3 +1,8 @@
+# REF: https://es.wikipedia.org/wiki/Problema_del_conjunto_de_cobertura
+
+import os
+
+os.environ['OMP_NUM_THREADS'] = '1'
 import csv
 import numpy as np
 
@@ -59,8 +64,18 @@ def test_function(x, *args, **kwargs):
     return c
 
 
-o = BCSO(test_function, dimension=n_group, n_cats=100, smp=10, maxiter=100, cdc=1, mr=0.5)
+o = BCSO(test_function, dimension=n_group, maxiter=300,
+                workers=1, threads=1, cats=150, mr=0.5, smp=20, cdc=0.7,
+                pmo=0.1, spc=False, omega=0.5, weight=1)
 
 best = o.run()
 
-print(best)
+print(best[BCSO.BEST_FUNC_TEST_VALUE])
+
+decode_covering = []
+
+for i, x in enumerate(best[BCSO.BEST_CAT_POSITION]):
+    if x:
+        decode_covering.append(i + 1)
+
+print(decode_covering)

@@ -369,7 +369,7 @@ class CSO(_CSO):
 class BCSO(_CSO):
 
     def init_positions(self, cats):
-        cats[self.CAT_POSITION] = self.random.randint(2, size=(self.n_cats, self.dimension))
+        cats[self.CAT_POSITION] = self.random.integers(2, size=(self.n_cats, self.dimension))
 
     # se asigna una velocidad por dimension
     # la velicidad en binario se define como

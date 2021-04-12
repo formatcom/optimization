@@ -8,7 +8,7 @@ import numpy as np
 
 from cso import BCSO
 
-FILEPATH = '../dataset/scp/set_cover_wiki.txt'
+FILEPATH = '../dataset/scp/set_cover_100.txt'
 
 dataraw = []
 with open(FILEPATH) as f:
@@ -59,14 +59,14 @@ def test_function(x, *args, **kwargs):
             n = n + ( matrix[i][j] * x[j] )
 
         if n == 0:
-            c = c + 1000
+            c = c + 100000
 
     return c
 
 
-o = BCSO(test_function, dimension=n_group, maxiter=300,
-                workers=1, threads=1, cats=150, mr=0.5, smp=20, cdc=0.7,
-                pmo=0.1, spc=False, omega=0.5, weight=1)
+o = BCSO(test_function, dimension=n_group, maxiter=12,
+                workers=1, threads=1, cats=100, mr=0.5, smp=10, cdc=0.5,
+                pmo=0.1, spc=False, omega=0.5, weight=1, debug=False)
 
 best = o.run()
 
