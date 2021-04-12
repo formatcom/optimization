@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg height="17pt" version="1.1" viewBox="0 0 99 17" width="99pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="17pt" version="1.1" viewBox="0 0 92 17" width="92pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <metadata>
   <rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2021-04-12T16:11:28.755215</dc:date>
+    <dc:date>2021-04-12T16:19:31.303832</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -22,14 +22,14 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 17 
-L 99 17 
-L 99 0 
+L 92 17 
+L 92 0 
 L 0 0 
 z
 " style="fill:#ffffff;"/>
   </g>
   <g id="text_1">
-   <!-- $ f(3,0.5)=0) $ -->
+   <!-- $ f(3,0.5)=0 $ -->
    <g transform="translate(0 13)scale(0.16 -0.16)">
     <defs>
      <path d="M 3191 4078 
@@ -214,7 +214,6 @@ z
     <use transform="translate(349.433594 0.015625)" xlink:href="#DejaVuSerif-29"/>
     <use transform="translate(407.412109 0.015625)" xlink:href="#DejaVuSerif-3d"/>
     <use transform="translate(510.166016 0.015625)" xlink:href="#DejaVuSerif-30"/>
-    <use transform="translate(573.789062 0.015625)" xlink:href="#DejaVuSerif-29"/>
    </g>
   </g>
  </g>
