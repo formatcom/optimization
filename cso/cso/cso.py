@@ -25,6 +25,10 @@ class _CSO:
     CAT_VELOCITY = 1
     CAT_FLAG = 2
 
+    HELP_CAT_INDEX = 0
+    HELP_CAT_POSITION = 1
+    HELP_CAT_COST = 2
+
     BEST_PROCESS_ID = 0
     BEST_CAT_INDEX = 1
     BEST_FUNC_TEST_VALUE = 2
@@ -67,6 +71,15 @@ class _CSO:
                                     copycat)))
         else:
             fs = np.array([self.func_test(x) for x in copycat])
+
+        # Ayuda al gato
+        if self.help_the_cat:
+            invert = -1 if self.maximize else 1
+            for i, x in enumerate(copycat):
+                patch = self.help_the_cat([i, x, fs[i]])
+
+                copycat[i] = patch[self.HELP_CAT_POSITION]
+                fs[i] = patch[self.HELP_CAT_COST] * invert
 
         if (fs == fs[0]).all():
             p = np.array([1] * len(copycat))
@@ -138,6 +151,15 @@ class _CSO:
                 newfs = np.array([self.func_test(x)
                                         for x in cats[self.CAT_POSITION]])
 
+            # Ayuda al gato
+            if self.help_the_cat:
+                invert = -1 if self.maximize else 1
+                for i, x in enumerate(cats[self.CAT_POSITION]):
+                    patch = self.help_the_cat([i, x, fs[i]])
+
+                    cats[self.CAT_POSITION][i] = patch[self.HELP_CAT_POSITION]
+                    newfs[i] = patch[self.HELP_CAT_COST] * invert
+
             ### 4.1 Guardar la mejor posición en memoria
             _update = newfs < fs
 
@@ -149,11 +171,11 @@ class _CSO:
                 best[self.BEST_CAT_INDEX] = _index_min
                 best[self.BEST_FUNC_TEST_VALUE] = fs[_index_min]
                 best[self.BEST_CAT_POSITION] = cats[self.CAT_POSITION][_index_min].copy()
+                if self.debug:
+                    print()
+                    print(best)
 
             if it == maxiter:
-
-                if self.debug:
-                    print(best)
 
                 if not shared_best:
                     break
@@ -258,13 +280,19 @@ class _CSO:
         return best
 
     def __init__(self, func_test, debug=True,
-            maximize=False, cats=100, maxiter=100,
+            maximize=False, cats=100, maxiter=100, help_the_cat=None,
             workers=1, threads=1, *args, **kwargs):
 
         # Validaciones iniciales
         assert hasattr(func_test, '__call__'), 'Invalid function handle'
 
         _func_test = partial(func_test, *args, **kwargs)
+
+        self.help_the_cat = None
+
+        if help_the_cat:
+            help_the_cat = partial(help_the_cat, *args, **kwargs)
+            self.help_the_cat = help_the_cat
 
         # Para maximizar la función la invierto: -f(x)
         self.func_test = _func_test if not maximize else lambda x: -_func_test(x)

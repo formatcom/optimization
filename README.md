@@ -36,6 +36,12 @@ Parametros
 
 Opcionales
 ==========
+- workers : int
+    Numero de procesos.
+    
+- threads : int
+    Numero de hilos.
+    
 - maximize : bool
     Por defecto es False, se utiliza para indicar si se busca max o min
     la func_test.
@@ -77,6 +83,9 @@ Opcionales
 
 - omega : float
     Factor para escalar la velocidad. Intervalo [0, 1].
+    
+- help_the_cat : func(cat, *args, **kwargs) []
+    Función que permite actualizar manualmenta la posicion de un gato dado. Ejemplo en test_knapsack_knapPI_1_100_1000_1.py 
 ~~~
 
 ### class BCSO
@@ -89,6 +98,12 @@ Parametros
 
 Opcionales
 ==========
+- workers : int
+    Numero de procesos.
+    
+- threads : int
+    Numero de hilos.
+    
 - maximize : bool
     Por defecto es False, se utiliza para indicar si se busca max o min
     la func_test.
@@ -133,6 +148,9 @@ Opcionales
 
 - weight : float
     Peso aplicado a la velocidad. Intervalo [0, 1].
+
+- help_the_cat : func(cat, *args, **kwargs) []
+    Función que permite actualizar manualmenta la posicion de un gato dado. Ejemplo en test_knapsack_knapPI_1_100_1000_1.py 
 
 ~~~
 
@@ -577,6 +595,125 @@ GFLOPS:  86.4
 |  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |114.46s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
 |  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |102.43s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
 
+### BCSO  | knapPI_1_100_1000_1.py | dimension 100
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |781.56s|[7, 11, 14, 24, 26, 31, 33, 38, 39, 49, 54, 61]| 9147.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |773.08s|[7, 11, 14, 24, 26, 31, 33, 38, 39, 49, 54, 61]| 9147.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |779.19s|[7, 11, 14, 24, 26, 31, 33, 38, 39, 49, 54, 61]| 9147.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |793.17s|[7, 11, 14, 24, 26, 31, 33, 38, 39, 49, 54, 61]| 9147.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |786.86s|[11, 13, 14, 24, 26, 33, 36, 38, 39, 49, 54, 61]| 8929.0 |
+
+### BCSO  | knapPI_1_200_1000_1.py | dimension 200
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1496.22s|[7, 11, 14, 31, 33, 38, 39, 49, 54, 61, 122, 135, 138, 147, 148]| 10853.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1530.05s|[7, 11, 13, 24, 31, 33, 38, 49, 54, 61, 122, 135, 138, 147, 148]| 10896.0|
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | **0.001** | 1 |1528.63s|[11, 24, 33, 38, 49, 54, 61, 114, 122, 135, 147, 169]| 9440.0|
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001 | 1 |1541.46s|[11, 14, 24, 26, 38, 39, 49, 54, 61, 122, 138, 147, 169]| 9799.0|
+
 ### Referencias
 ~~~
 - https://www.researchgate.net/publication/221419703_Cat_Swarm_Optimization
@@ -588,4 +725,5 @@ GFLOPS:  86.4
 - https://en.wikipedia.org/wiki/Test_functions_for_optimization
 - https://es.wikipedia.org/wiki/Problema_del_conjunto_de_cobertura
 - https://en.wikipedia.org/wiki/Set_cover_problem
+- https://qiita.com/SaitoTsutomu/items/bfbf4c185ed7004b5721
 ~~~
