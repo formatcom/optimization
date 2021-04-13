@@ -5,7 +5,7 @@ import numpy as np
 
 from cso import BCSO
 
-FILEPATH = '../dataset/kp/knapsack_wiki.csv'
+FILEPATH = '../dataset/kp/low-dimensional/f2_l-d_kp_20_878'
 
 W = 0      # pesos
 U = 0      # utilidades

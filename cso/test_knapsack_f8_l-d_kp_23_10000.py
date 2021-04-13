@@ -5,7 +5,7 @@ import numpy as np
 
 from cso import BCSO
 
-FILEPATH = '../dataset/kp/knapsack_wiki.csv'
+FILEPATH = '../dataset/kp/low-dimensional/f8_l-d_kp_23_10000'
 
 W = 0      # pesos
 U = 0      # utilidades
@@ -13,9 +13,9 @@ N = 0      # numero de objetos
 M = 0      # peso maximo
 
 with open(FILEPATH, 'r') as f:
-    data = np.array(list(csv.reader(f, delimiter=' ')), dtype=int)
+    data = np.array(list(csv.reader(f, delimiter=' ')), dtype=float)
 
-    N = data[0][0]
+    N = int(data[0][0])
     M = data[0][1]
 
     data = data[1:]
@@ -50,7 +50,7 @@ def test_function(x, *args, **kwargs):
 
 o = BCSO(test_function, dimension=N, maxiter=150, maximize=True,
                 workers=1, threads=1, cats=500, mr=0.5, smp=20, cdc=0.7,
-                pmo=0.7, spc=False, omega=0.5, weight=1)
+                pmo=0.7, spc=True, omega=0.001, weight=1)
 
 best = o.run()
 

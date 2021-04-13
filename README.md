@@ -348,9 +348,235 @@ GFLOPS:  86.4
 |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |  1  | 1 | 1 | 12 | 100| 0.5 | 10 | 0.3 | 0.1 | False | 0.5 | 1 |550.42s |[1, 2, 3, 4, 5, 6, 7, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 29, 31, 32, 33, 34, 35, 37, 38, 39, 41, 42, 43, 44, 46, 49, 50, 52, 53, 54, 56, 57, 61, 62, 63, 64, 65, 67, 70, 71, 73, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 88, 89, 90, 91, 92, 93, 95, 96, 97, 98, 100]| 3826.0 |
 |  2  | 1 | 1 | 12 | 100| 0.5 | 10 | 0.3 | 0.1 | False | 0.5 | 1 |541.44s |[3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22, 24, 25, 26, 27, 30, 31, 32, 33, 34, 37, 41, 42, 43, 46, 47, 50, 52, 53, 54, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 87, 88, 90, 92, 93, 94, 95, 96, 97, 98, 99]| 3797.0 |
+|  3  | 1 | 1 | 12 | 100| 0.5 | 10 | 0.3 | 0.1 | False | 0.5 | 1 |510.48s |[1, 3, 4, 5, 6, 7, 9, 10, 12, 14, 16, 17, 18, 19, 20, 21, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 46, 48, 49, 50, 52, 53, 54, 55, 56, 57, 58, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 75, 76, 77, 78, 80, 82, 83, 85, 86, 87, 88, 89, 91, 92, 95, 96, 98, 100]| 3987.0 |
+|  4  | 1 | 1 | 12 | 100| 0.5 | 10 | 0.3 | 0.1 | False | 0.5 | 1 |524.29s |[1, 4, 5, 6, 7, 9, 10, 12, 13, 14, 16, 17, 18, 19, 22, 23, 25, 29, 31, 33, 34, 35, 37, 38, 40, 41, 42, 43, 45, 46, 49, 50, 52, 53, 54, 56, 58, 59, 60, 61, 63, 65, 66, 67, 70, 71, 72, 73, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 87, 88, 89, 90, 92, 95, 96]| 3812.0 |
 
-> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+### BCSO  | test_knapsack_wiki.py | dimension 10
+
+> Maximizar
 >
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |26.52s |[1, 4, 8]| 1270.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |28.34s |[1, 4, 8]| 1270.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |29.01s |[1, 4, 8]| 1270.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |29.00s |[1, 4, 8]| 1270.0 |
+
+### BCSO  | f1_l-d_kp_10_269.py | dimension 10
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |26.95s |[2, 3, 4, 8, 9, 10]| 295.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |25.88s |[2, 3, 4, 8, 9, 10]| 295.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |27.51s |[2, 3, 4, 8, 9, 10]| 295.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |28.03s |[2, 3, 4, 8, 9, 10]| 295.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |26.21s |[2, 3, 4, 8, 9, 10]| 295.0 |
+
+### BCSO  | f2_l-d_kp_20_878.py | dimension 20
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.97s |[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20]| 1024.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.75s |[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20]| 1024.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |45.72s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20]| 1024.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |42.82s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20]| 1024.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.48s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20]| 1024.0 |
+
+### BCSO  | f3_l-d_kp_4_20.py | dimension 4
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.18s |[1, 2, 4]| 35.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.67s |[1, 2, 4]| 35.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |17.95s |[1, 2, 4]| 35.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.87s |[1, 2, 4]| 35.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.97s |[1, 2, 4]| 35.0 |
+
+### BCSO  | f4_l-d_kp_4_11.py | dimension 4
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.18s |[2, 4]| 23.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |18.85s |[2, 4]| 23.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |17.53s |[2, 4]| 23.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |19.14s |[2, 4]| 23.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |19.17s |[2, 4]| 23.0 |
+
+### BCSO  | f5_l-d_kp_15_375.py | dimension 15
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |82.99s|[3, 5, 7, 8, 10, 11, 12, 14, 15]| 481.069368 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |79.21s|[3, 5, 7, 8, 10, 11, 12, 14, 15]| 481.069368 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |87.43s|[3, 5, 7, 8, 10, 11, 12, 14, 15]| 481.069368 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |86.48s|[3, 5, 7, 8, 10, 11, 12, 14, 15]| 481.069368 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |85.91s|[3, 5, 7, 8, 10, 11, 12, 14, 15]| 481.069368 |
+
+### BCSO  | f6_l-d_kp_10_60.py | dimension 10
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |56.93s|[3, 4, 6, 7, 8, 9, 10]| 52.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |61.17s|[3, 4, 6, 7, 8, 9, 10]| 52.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |60.79s|[3, 4, 6, 7, 8, 9, 10]| 52.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |59.16s|[3, 4, 6, 7, 8, 9, 10]| 52.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |58.70s|[3, 4, 6, 7, 8, 9, 10]| 52.0 |
+
+### BCSO  | f7_l-d_kp_7_50.py | dimension 7
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |45.35s|[1, 4]| 107.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.79s|[1, 4]| 107.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.87s|[1, 4]| 107.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |43.31s|[1, 4]| 107.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |44.93s|[1, 4]| 107.0 |
+
+### BCSO  | f8_l-d_kp_23_10000.py | dimension 23
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |122.44s|[1, 2, 3, 4, 5, 6, 7, 10, 14, 16, 17, 18]| 9759.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |127.00s|[1, 2, 3, 4, 6, 7, 8, 13, 14, 16, 17]| 9759.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |120.35s|[1, 2, 3, 4, 6, 7, 8, 10, 13, 14, 17, 18]| 9750.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |115.06s|[1, 2, 3, 4, 5, 6, 7, 8, 11, 14, 15, 16]| 9761.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |122.68s|[1, 2, 3, 4, 5, 6, 7, 10, 11, 13, 15, 16]| 9758.0 |
+~~~
+~~~
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | **0.01** | 1 |127.06s|[1, 2, 3, 4, 5, 6, 7, 8, 14, 16, 17]| 9766.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.01 | 1 |124.10s|[1, 2, 3, 4, 5, 6, 8, 10, 15, 16, 17]| 9764.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.01 | 1 |124.30s|[1, 2, 3, 4, 5, 6, 7, 10, 15, 16, 17, 18]| 9759.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.01 | 1 |119.14s|[1, 2, 3, 4, 5, 6, 7, 9, 11, 16, 17]| 9763.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.01 | 1 |125.78s|[1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 17]| 9766.0 |
+~~~
+~~~
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | **True** | **0.001** | 1 |126.24s|[1, 2, 3, 4, 5, 6, 7, 8, 11, 16, 17]| **9767.0** |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001| 1 |125.19s|[1, 2, 3, 4, 5, 6, 7, 8, 14, 16, 17]| 9766.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001| 1 |125.67s|[1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 14, 16]| 9762.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001| 1 |124.16s|[1, 2, 3, 4, 5, 6, 7, 8, 10, 16, 17]| **9767.0** |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001| 1 |125.83s|[1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 16]| 9759.0 |
+
+### BCSO  | f9_l-d_kp_5_80.py | dimension 5
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |36.35s|[1, 2, 3, 4]| 130.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |37.97s|[1, 2, 3, 4]| 130.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |34.76s|[1, 2, 3, 4]| 130.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |34.38s|[1, 2, 3, 4]| 130.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |34.49s|[1, 2, 3, 4]| 130.0 |
+
+### BCSO  | f10_l-d_kp_20_879.py | dimension 20
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+> El costo se penaliza si supera el limite establecido:
+>
+> ![knapsack](markdown/knapsack1.svg)
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |103.38s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |110.25s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |102.77s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |114.46s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | False | 0.5 | 1 |102.43s|[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 16, 18, 19, 20]| 1025.0 |
+
 ### Referencias
 ~~~
 - https://www.researchgate.net/publication/221419703_Cat_Swarm_Optimization

@@ -5,7 +5,7 @@ import numpy as np
 
 from cso import BCSO
 
-FILEPATH = '../dataset/kp/knapsack_wiki.csv'
+FILEPATH = '../dataset/kp/low-dimensional/f5_l-d_kp_15_375'
 
 W = 0      # pesos
 U = 0      # utilidades
@@ -13,9 +13,9 @@ N = 0      # numero de objetos
 M = 0      # peso maximo
 
 with open(FILEPATH, 'r') as f:
-    data = np.array(list(csv.reader(f, delimiter=' ')), dtype=int)
+    data = np.array(list(csv.reader(f, delimiter=' ')), dtype=float)
 
-    N = data[0][0]
+    N = int(data[0][0])
     M = data[0][1]
 
     data = data[1:]
