@@ -36,6 +36,9 @@ Parametros
 
 Opcionales
 ==========
+- debug : bool
+    Muestra información de log.
+
 - workers : int
     Numero de procesos.
     
@@ -98,6 +101,9 @@ Parametros
 
 Opcionales
 ==========
+- debug : bool
+    Muestra información de log.
+
 - workers : int
     Numero de procesos.
     
@@ -713,6 +719,245 @@ def help_the_cat(cat, *args, **kwargs):
 |  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1530.05s|[7, 11, 13, 24, 31, 33, 38, 49, 54, 61, 122, 135, 138, 147, 148]| 10896.0|
 |  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | **0.001** | 1 |1528.63s|[11, 24, 33, 38, 49, 54, 61, 114, 122, 135, 147, 169]| 9440.0|
 |  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.001 | 1 |1541.46s|[11, 14, 24, 26, 38, 39, 49, 54, 61, 122, 138, 147, 169]| 9799.0|
+
+### BCSO  | knapPI_2_100_1000_1.py | dimension 100
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |738.84s|[11, 24, 30, 38, 57, 71]| 1387.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |826.77s|[11, 24, 31, 33, 38, 54, 57, 71, 85]| 1497.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |834.65s|[11, 24, 33, 38, 45, 57, 71, 85]| 1513.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |835.55s|[21, 24, 33, 45, 57, 71]| 1463.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |823.28s|[5, 24, 38, 45, 71, 85]| 1471.0 |
+
+### BCSO  | knapPI_2_200_1000_1.py | dimension 200
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1468.33s|[11, 33, 38, 148, 160, 189, 197, 199]| 1533.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1822.06s|[24, 33, 38, 54, 57, 85, 110, 138, 148]| 1623.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1714.10s|[24, 54, 57, 85, 110, 138, 148, 199]| 1573.0 |
+|  4 | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1652.91s|[24, 33, 38, 45, 54, 57, 122, 136, 138]| 1522.0 |
+
+### BCSO  | knapPI_3_100_1000_1.py | dimension 100
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |805.31s|[2, 13, 21, 25, 27, 30, 47, 64, 65, 75, 77, 86, 90, 97]| 2390.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |747.18s|[2, 13, 21, 30, 44, 47, 51, 64, 65, 73, 86, 90, 97]| 2297.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |774.38s|[13, 21, 25, 30, 44, 47, 64, 65, 73, 75, 77, 86, 97]| 2297.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |742.20s|[13, 21, 27, 30, 47, 64, 71, 75, 77, 86, 89, 90, 97]| 2297.0 |
+|  5  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |775.75s|[13, 21, 25, 30, 44, 47, 51, 71, 73, 75, 86, 90, 97]| 2289.0 |
+
+### BCSO  | knapPI_3_200_1000_1.py | dimension 200
+> Dataset utilizado ref: [http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/](http://artemisa.unicauca.edu.co/~johnyortega/instances_01_KP/) 
+
+> Maximizar
+>
+> ![knapsack](markdown/knapsack0.svg)
+>
+
+En este caso ayudamos al **gatito** con la siguiente función 
+~~~python
+def help_the_cat(cat, *args, **kwargs):
+
+    # variables de ayuda
+    w = 0
+    x = cat[BCSO.HELP_CAT_POSITION].copy()
+
+    for i, _ in enumerate(x):
+        w = w + (x[i] * W[i])
+
+    # Si no ha superado el maximo, retornamos el gato original
+    if w <= M:
+        return cat
+
+    # Ayudamos un poco a nuestro gatito ( Yue )
+    clon = cat
+
+    w = 0
+
+    # El clon lo iniciamos con cero items
+    clon[BCSO.HELP_CAT_POSITION] = np.zeros(N)
+
+    # dimensiones organizadas de manera aleatoria
+    dimension = np.random.permutation(np.array((range(N))))
+
+    for i in dimension:
+
+        _w = w + (x[i] * W[i])
+
+        if _w <= M:
+
+            w = _w
+            clon[BCSO.HELP_CAT_POSITION][i] = x[i]
+
+    # calculamos el costo
+    c = test_function(clon[BCSO.HELP_CAT_POSITION], *args, **kwargs)
+
+    # ahora si actualizamos el gato
+    clon[BCSO.HELP_CAT_COST] = c
+
+    return clon
+~~~
+
+| n  | workers | threads | maxiter | cats | mr | smp | cdc | pmo | spc | omega | weight | time | knapsack | optimum |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|  1  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1499.92s|[2, 13, 21, 30, 64, 65, 75, 90, 97, 104, 107, 114, 158, 164, 165, 170]| 2596.0 |
+|  2  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1459.87s|[13, 21, 27, 30, 47, 51, 71, 75, 77, 86, 90, 107, 114, 148, 158, 170]| 2595.0 |
+|  3  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1518.84s|[13, 21, 30, 44, 55, 61, 75, 90, 97, 107, 114, 148, 158, 165, 170]| 2497.0 |
+|  4  | 1 | 1 | 150 | 500| 0.5 | 20 | 0.7 | 0.7 | True | 0.5 | 1 |1487.63s|[13, 21, 27, 30, 47, 71, 73, 86, 90, 97, 107, 121, 142, 148, 158, 170]| 2577.0 |
+
 
 ### Referencias
 ~~~
