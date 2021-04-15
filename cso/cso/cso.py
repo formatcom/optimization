@@ -260,16 +260,6 @@ class _CSO:
             for i in range(self.dimension):
                 best[self.BEST_CAT_POSITION].append(shared_best[self.BEST_CAT_POSITION + i])
 
-            '''
-            for _ in range(self.workers):
-                _best = queue_best.get()
-                if self.debug:
-                    print(_best)
-
-                if _best[self.BEST_FUNC_TEST_VALUE] < best[self.BEST_FUNC_TEST_VALUE]:
-                    best = _best
-            '''
-
         # Se parchea la salida si se esta maximizando para optener el valor real: -f(x)
         if self.maximize:
             best[self.BEST_FUNC_TEST_VALUE] = -best[self.BEST_FUNC_TEST_VALUE]
