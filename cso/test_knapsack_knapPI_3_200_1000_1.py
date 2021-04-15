@@ -87,7 +87,7 @@ def help_the_cat(cat, *args, **kwargs):
 
 
 o = BCSO(test_function, dimension=N, maxiter=150, maximize=True, help_the_cat=help_the_cat,
-                workers=1, threads=1, cats=500, mr=0.5, smp=20, cdc=0.7,
+                workers=4, threads=1, cats=500, mr=0.5, smp=20, cdc=0.7,
                 pmo=0.7, spc=True, omega=0.5, weight=1)
 
 best = o.run()

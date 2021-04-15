@@ -46,7 +46,7 @@ class _CSO:
     def apply_mutation(self, cats):
         pass
 
-    # Gato buscando / cazando
+    # Gato cazando
     def mode_tracing(self, mask, cats, best):
         pass
 
@@ -113,22 +113,22 @@ class _CSO:
                         ( [False] * (self.dimension - self.n_mutations) )
 
 
-        ### 2.- Generar N gatos aleatorios y posicionar en el espacio dimensional M
+        ### 1.- Generar N gatos aleatorios y posicionar en el espacio dimensional M
         cats = [[]] * 3
 
         self.init_positions(cats)
 
-        ### 2.1.- Inicializar velocidad
+        ### 1.1.- Inicializar velocidad
         self.init_velocity(cats)
 
-        ### 3.- Clasificar aleatoriamente a los gatos segun el mr
+        ### 2.- Clasificar aleatoriamente a los gatos segun el mr
         cats[self.CAT_FLAG] = ( [self.MODE_TRACING] * int(self.n_cats * self.mr) ) + \
                               ( [self.MODE_SEEKING] * int(self.n_cats * (1 - self.mr)))
 
         cats[self.CAT_FLAG] = self.random.permutation(cats[self.CAT_FLAG])
 
 
-        ### 4.- Evaluar la función fitness para todos los gatos
+        ### 3.- Evaluar la función fitness para todos los gatos
         best = [[]] * 4
 
         best[self.BEST_PROCESS_ID] = pid
@@ -160,7 +160,7 @@ class _CSO:
                     cats[self.CAT_POSITION][i] = patch[self.HELP_CAT_POSITION]
                     newfs[i] = patch[self.HELP_CAT_COST] * invert
 
-            ### 4.1 Guardar la mejor posición en memoria
+            ### 3.1 Guardar la mejor posición en memoria
             _update = newfs < fs
 
             fs[_update] = newfs[_update]
@@ -189,7 +189,7 @@ class _CSO:
                         shared_best[self.BEST_CAT_POSITION + i] = position
                 break
 
-            ### 5.- Aplicar comportamientos
+            ### 4.- Aplicar comportamientos
             mask_tracing = cats[self.CAT_FLAG] == self.MODE_TRACING
             mask_seeking = ~mask_tracing
 
@@ -370,7 +370,7 @@ class CSO(_CSO):
                             omega=omega, mr=mr,
                             smp=smp, cdc=cdc, spc=spc, *args, **kwargs)
 
-    # Gato buscando / cazando
+    # Gato cazando
     def mode_tracing(self, mask, cats, best):
 
         n = len(cats[self.CAT_POSITION][mask])
@@ -420,7 +420,7 @@ class BCSO(_CSO):
 
             cat[self.maskm] = x
 
-    # Gato buscando / cazando
+    # Gato cazando
     def mode_tracing(self, mask, cats, best):
 
         c = self.omega
@@ -456,7 +456,7 @@ class BCSO(_CSO):
                 # 4.- Probabilidad de mutación
                 m = 1 / (1 + (np.e ** -cats[self.CAT_VELOCITY][k][d][1]))
 
-                if self.random.random() > m:
+                if self.random.random() < m:
                     cat[d] = best[self.BEST_CAT_POSITION][d]
 
 
